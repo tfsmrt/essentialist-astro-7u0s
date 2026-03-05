@@ -1,0 +1,249 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PostCard from '../components/PostCard.astro';
+import siteConfig from '../../site-config.json';
+
+// Fetch and filter blog posts
+const allPosts = await getCollection('blog');
+const posts = allPosts
+  .filter((post) => {
+    // Exclude "Page not found" posts and drafts
+    if (post.data.draft) return false;
+    if (post.data.title === 'Page not found – Essentialist') return false;
+    if (post.slug === 'navigation' || post.slug === 'navigation-2') return false;
+    return true;
+  })
+  .sort((a, b) => {
+    const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
+    const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
+    return dateB - dateA;
+  });
+
+function buildPostUrl(post: (typeof posts)[0]): string {
+  if (!post.data.date) return `/${post.slug}`;
+  const d = new Date(post.data.date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `/${year}/${month}/${day}/${post.slug}`;
+}
+
+function cleanTitle(title: string): string {
+  return title.replace(/ – Essentialist$/, '');
+}
+
+const nav = siteConfig.nav;
+---
+
+<Base title={siteConfig.title} description={siteConfig.description}>
+  <div class="home-layout">
+    <aside class="home-sidebar">
+      <button class="hamburger" id="home-hamburger-btn" aria-label="Open menu" aria-expanded="false" aria-controls="home-mobile-menu">
+        ☰
+      </button>
+      <p class="site-description">{siteConfig.description}</p>
+      <nav class="sidebar-nav" aria-label="Main navigation">
+        {nav.map((item) => (
+          <a href={item.href} class="sidebar-nav-link">{item.label}</a>
+        ))}
+      </nav>
+    </aside>
+
+    <main class="home-main">
+      <ul class="post-list">
+        {posts.map((post) => (
+          <PostCard
+            title={cleanTitle(post.data.title)}
+            href={buildPostUrl(post)}
+            image={post.data.image}
+            date={post.data.date ?? new Date()}
+            slug={post.slug}
+          />
+        ))}
+      </ul>
+    </main>
+  </div>
+
+  <!-- Mobile fullscreen overlay -->
+  <div class="mobile-menu" id="home-mobile-menu" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <button class="mobile-close" id="home-mobile-close-btn" aria-label="Close menu">✕</button>
+    <nav class="mobile-nav" aria-label="Mobile navigation">
+      {nav.map((item) => (
+        <a href={item.href} class="mobile-nav-link">{item.label}</a>
+      ))}
+    </nav>
+  </div>
+</Base>
+
+<script>
+  const hamburgerBtn = document.getElementById('home-hamburger-btn');
+  const mobileCloseBtn = document.getElementById('home-mobile-close-btn');
+  const mobileMenu = document.getElementById('home-mobile-menu');
+
+  function openMenu() {
+    mobileMenu?.classList.add('is-open');
+    mobileMenu?.setAttribute('aria-hidden', 'false');
+    hamburgerBtn?.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    mobileMenu?.classList.remove('is-open');
+    mobileMenu?.setAttribute('aria-hidden', 'true');
+    hamburgerBtn?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  hamburgerBtn?.addEventListener('click', openMenu);
+  mobileCloseBtn?.addEventListener('click', closeMenu);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+</script>
+
+<style>
+  .home-layout {
+    display: grid;
+    grid-template-columns: 35% 65%;
+    min-height: 100vh;
+    background-color: var(--color-bg);
+  }
+
+  .home-sidebar {
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .hamburger {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    align-self: flex-start;
+  }
+
+  .hamburger:hover {
+    color: var(--color-primary-hover);
+  }
+
+  .site-description {
+    font-size: var(--size-base);
+    color: var(--color-text);
+    line-height: var(--lh-base);
+    margin: 0;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .sidebar-nav-link {
+    color: var(--color-primary);
+    font-size: 13px;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+  }
+
+  .sidebar-nav-link:hover {
+    color: var(--color-primary-hover);
+    text-decoration: underline;
+  }
+
+  .home-main {
+    padding: 2.5rem 2rem 4rem;
+    border-left: 1px solid var(--color-border);
+  }
+
+  .post-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Mobile fullscreen overlay */
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    background-color: var(--color-bg);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+
+  .mobile-menu.is-open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .mobile-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+  }
+
+  .mobile-close:hover {
+    color: var(--color-primary-hover);
+  }
+
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .mobile-nav-link {
+    color: var(--color-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .mobile-nav-link:hover {
+    color: var(--color-primary-hover);
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .home-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .home-sidebar {
+      position: static;
+      height: auto;
+      padding: 1.5rem 1rem;
+    }
+
+    .home-main {
+      padding: 1rem 1rem 3rem;
+      border-left: none;
+      border-top: 1px solid var(--color-border);
+    }
+  }
+</style>

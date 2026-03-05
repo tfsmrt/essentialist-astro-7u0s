@@ -1,0 +1,163 @@
+---
+import Base from './Base.astro';
+import Header from '../components/Header.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  date: Date;
+  image?: string;
+  categories?: string[];
+  slug?: string;
+}
+
+const { title, description, date, image, categories = [] } = Astro.props;
+
+// Clean title — remove " – Essentialist" suffix
+const displayTitle = title.replace(/ – Essentialist$/, '');
+
+function formatDate(d: Date): string {
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const dt = new Date(d);
+  return `${months[dt.getMonth()]} ${dt.getDate()}—${dt.getFullYear()}`;
+}
+
+const formattedDate = formatDate(date);
+---
+
+<Base title={displayTitle} description={description} image={image}>
+  <div class="post-page">
+    <Header />
+    <article class="post-article">
+      <div class="post-header">
+        <div class="post-title-area">
+          <h1 class="post-heading">{displayTitle}</h1>
+          <time class="post-date" datetime={date.toISOString()}>{formattedDate}</time>
+        </div>
+        {image && (
+          <div class="post-image-area">
+            <img src={image} alt={displayTitle} class="post-featured-img duotone" loading="eager" />
+          </div>
+        )}
+      </div>
+
+      <div class="post-body prose">
+        <slot />
+      </div>
+
+      {categories.length > 0 && (
+        <div class="post-footer">
+          <p class="post-categories">
+            {categories.map((cat, i) => (
+              <span class="category">{cat}{i < categories.length - 1 ? ', ' : ''}</span>
+            ))}
+          </p>
+        </div>
+      )}
+    </article>
+  </div>
+</Base>
+
+<style>
+  .post-page {
+    background-color: var(--color-surface);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-article {
+    flex: 1;
+    padding: 0 2rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .post-header {
+    display: grid;
+    grid-template-columns: 45% 55%;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    align-items: start;
+  }
+
+  .post-title-area {
+    padding-right: 1rem;
+  }
+
+  .post-heading {
+    font-size: 2.75rem; /* ~44px */
+    font-weight: 600;
+    line-height: var(--lh-heading);
+    color: var(--color-text);
+    margin-bottom: 1rem;
+  }
+
+  .post-date {
+    display: block;
+    font-size: 1.5rem; /* ~24px */
+    color: var(--color-text);
+    font-weight: 400;
+  }
+
+  .post-image-area {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .post-featured-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .duotone {
+    filter: grayscale(100%) sepia(80%) hue-rotate(80deg) saturate(400%) brightness(0.85);
+  }
+
+  .post-body {
+    max-width: 60%;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+
+  .post-footer {
+    max-width: 60%;
+    margin: 2rem auto 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .post-categories {
+    font-size: 13px;
+    color: var(--color-muted);
+    margin: 0;
+  }
+
+  .category {
+    color: var(--color-muted);
+  }
+
+  @media (max-width: 768px) {
+    .post-article {
+      padding: 0 1rem 3rem;
+    }
+
+    .post-header {
+      grid-template-columns: 1fr;
+    }
+
+    .post-heading {
+      font-size: 2rem;
+    }
+
+    .post-body {
+      max-width: 100%;
+    }
+
+    .post-footer {
+      max-width: 100%;
+    }
+  }
+</style>

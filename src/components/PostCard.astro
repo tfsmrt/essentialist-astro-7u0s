@@ -1,0 +1,78 @@
+---
+interface Props {
+  title: string;
+  href: string;
+  image?: string;
+  date: Date;
+  slug: string;
+}
+
+const { title, href, image, date } = Astro.props;
+
+function formatDate(d: Date): string {
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const dt = new Date(d);
+  return `${months[dt.getMonth()]} ${dt.getDate()}—${dt.getFullYear()}`;
+}
+
+const formattedDate = formatDate(date);
+---
+
+<li class="post-item">
+  <h2><a href={href} class="post-title-link">{title}</a></h2>
+  <div class="post-meta">
+    {image && (
+      <img src={image} alt="" class="post-thumb" width="50" height="50" loading="lazy" />
+    )}
+    <a href={href} class="post-date">{formattedDate}</a>
+  </div>
+</li>
+
+<style>
+  .post-item {
+    list-style: none;
+    margin-bottom: 3rem;
+  }
+
+  .post-item h2 {
+    font-size: 2.12rem; /* ~34px at 16px base, ~36px */
+    font-weight: 600;
+    line-height: var(--lh-heading);
+    margin-bottom: 0.75rem;
+  }
+
+  .post-title-link {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .post-title-link:hover {
+    color: var(--color-primary-hover);
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .post-thumb {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    flex-shrink: 0;
+    filter: grayscale(100%) sepia(80%) hue-rotate(80deg) saturate(400%) brightness(0.85);
+  }
+
+  .post-date {
+    font-size: 1.41rem; /* ~24px */
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 400;
+  }
+
+  .post-date:hover {
+    color: var(--color-primary-hover);
+  }
+</style>

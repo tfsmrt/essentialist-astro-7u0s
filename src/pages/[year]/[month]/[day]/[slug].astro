@@ -1,0 +1,51 @@
+---
+import { getCollection } from 'astro:content';
+import PostLayout from '../../../../layouts/PostLayout.astro';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+  const posts = allPosts.filter((post) => {
+    if (post.data.draft) return false;
+    if (post.data.title === 'Page not found – Essentialist') return false;
+    if (post.slug === 'navigation' || post.slug === 'navigation-2') return false;
+    return true;
+  });
+
+  return posts.map((post) => {
+    const date = post.data.date ? new Date(post.data.date) : new Date();
+    const year = String(date.getFullYear());
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return {
+      params: {
+        year,
+        month,
+        day,
+        slug: post.slug,
+      },
+      props: { post },
+    };
+  });
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const title = post.data.title;
+const description = post.data.description;
+const date = post.data.date ?? new Date();
+const image = post.data.image;
+const categories = post.data.categories ?? [];
+const slug = post.slug;
+---
+
+<PostLayout
+  title={title}
+  description={description}
+  date={date}
+  image={image}
+  categories={categories}
+  slug={slug}
+>
+  <Content />
+</PostLayout>

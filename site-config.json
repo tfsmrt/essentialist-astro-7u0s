@@ -1,0 +1,21 @@
+{
+  "title": "Essentialist",
+  "description": "Minimalism is a mindset, not only an aesthetic. Here, Isla Kerr explores what happens when distractions fade and only the essential remains. Through stories of everyday choices, the Essentialist uncovers the freedom found in less.",
+  "url": "https://essentialistdemo.wordpress.com/",
+  "logo": "",
+  "favicon": "/images/ad5e5835a7144ca70230.png",
+  "nav": [
+    { "label": "About", "href": "/about" },
+    { "label": "Coaching", "href": "/coaching" },
+    { "label": "Now", "href": "/now" }
+  ],
+  "footer": {
+    "copyright": "© Essentialist",
+    "links": []
+  },
+  "social": [
+    { "platform": "mastodon", "label": "Mastodon", "url": "#" },
+    { "platform": "bluesky", "label": "Bluesky", "url": "#" },
+    { "platform": "linkedin", "label": "LinkedIn", "url": "#" }
+  ]
+}

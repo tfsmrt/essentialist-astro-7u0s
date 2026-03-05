@@ -1,0 +1,42 @@
+{
+  "colors": {
+    "background": "#fcfcfc",
+    "surface": "#f0faf5",
+    "text": "#00994d",
+    "textMuted": "#33b369",
+    "heading": "#00994d",
+    "link": "#00994d",
+    "linkHover": "#007a3d",
+    "primary": "#00994d",
+    "primaryHover": "#007a3d",
+    "border": "#c8e6d5",
+    "accent": "#00994d"
+  },
+  "typography": {
+    "fontBody": "'Hauora', 'Open Sans', sans-serif",
+    "fontHeading": "'Hauora', 'Open Sans', sans-serif",
+    "fontMono": "monospace",
+    "fontImport": "@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap')",
+    "sizeBase": "17px",
+    "sizeSm": "13px",
+    "sizeLg": "20px",
+    "sizeXl": "24px",
+    "size2xl": "28px",
+    "size3xl": "36px",
+    "size4xl": "48px",
+    "weightNormal": "400",
+    "weightMedium": "500",
+    "weightSemibold": "600",
+    "weightBold": "700",
+    "lineHeightBase": "1.6",
+    "lineHeightHeading": "1.2"
+  },
+  "spacing": {
+    "containerMax": "1200px",
+    "containerPadX": "2rem",
+    "sectionPaddingY": "4rem",
+    "cardPadding": "0"
+  },
+  "radii": { "sm": "2px", "md": "4px", "lg": "8px", "full": "9999px" },
+  "shadows": { "sm": "none", "md": "none", "lg": "none" }
+}

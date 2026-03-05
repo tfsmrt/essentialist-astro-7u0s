@@ -1,0 +1,200 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap');
+
+/* ─── CSS Custom Properties ─────────────────────────────── */
+:root {
+  --color-bg: #fcfcfc;
+  --color-surface: #f0faf5;
+  --color-primary: #00994d;
+  --color-primary-hover: #007a3d;
+  --color-text: #00994d;
+  --color-muted: #33b369;
+  --color-border: #c8e6d5;
+  --font-body: 'Hauora', 'Open Sans', sans-serif;
+  --font-heading: 'Hauora', 'Open Sans', sans-serif;
+  --size-base: 17px;
+  --lh-base: 1.6;
+  --lh-heading: 1.2;
+  --container-max: 1200px;
+  --container-pad: 2rem;
+}
+
+/* ─── CSS Reset ──────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Base Elements ──────────────────────────────────────── */
+html {
+  font-size: var(--size-base);
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--size-base);
+  line-height: var(--lh-base);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  min-height: 100vh;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  line-height: var(--lh-heading);
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+p {
+  line-height: var(--lh-base);
+  margin-bottom: 1.25rem;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+ul, ol {
+  padding-left: 1.5rem;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 2rem 0;
+}
+
+strong {
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+em {
+  font-style: italic;
+}
+
+blockquote {
+  border-left: 3px solid var(--color-border);
+  padding-left: 1.25rem;
+  margin: 1.5rem 0;
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+/* ─── Utilities ──────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.container {
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-pad);
+  padding-right: var(--container-pad);
+}
+
+/* ─── Prose Styles (Blog Post Content) ──────────────────── */
+.prose {
+  color: var(--color-text);
+  line-height: var(--lh-base);
+}
+
+.prose h2 {
+  font-size: 1.53rem; /* ~26px */
+  font-weight: 600;
+  line-height: var(--lh-heading);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  color: var(--color-text);
+}
+
+.prose h3 {
+  font-size: 1.24rem;
+  font-weight: 600;
+  line-height: var(--lh-heading);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose p {
+  margin-bottom: 1.25rem;
+  line-height: var(--lh-base);
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.prose li {
+  margin-bottom: 0.35rem;
+  line-height: var(--lh-base);
+}
+
+.prose strong {
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.prose em {
+  font-style: italic;
+}
+
+.prose blockquote {
+  border-left: 3px solid var(--color-border);
+  padding-left: 1.25rem;
+  margin: 1.5rem 0;
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 2rem 0;
+}
+
+.prose a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.prose a:hover {
+  color: var(--color-primary-hover);
+}
+
+.prose img {
+  max-width: 100%;
+  height: auto;
+  filter: grayscale(100%) sepia(80%) hue-rotate(80deg) saturate(400%) brightness(0.85);
+}
