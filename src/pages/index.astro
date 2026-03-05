@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import PostCard from '../components/PostCard.astro';
 import siteConfig from '../../site-config.json';
+import { url } from '../lib/url';
 
 // Fetch and filter blog posts
 const allPosts = await getCollection('blog');
@@ -21,12 +22,12 @@ const posts = allPosts
   });
 
 function buildPostUrl(post: (typeof posts)[0]): string {
-  if (!post.data.date) return `/${post.slug}`;
+  if (!post.data.date) return url(`/${post.slug}`);
   const d = new Date(post.data.date);
   const year = d.getFullYear();
   const month = String(d.getMonth() + 1).padStart(2, '0');
   const day = String(d.getDate()).padStart(2, '0');
-  return `/${year}/${month}/${day}/${post.slug}`;
+  return url(`/${year}/${month}/${day}/${post.slug}`);
 }
 
 function cleanTitle(title: string): string {
@@ -45,7 +46,7 @@ const nav = siteConfig.nav;
       <p class="site-description">{siteConfig.description}</p>
       <nav class="sidebar-nav" aria-label="Main navigation">
         {nav.map((item) => (
-          <a href={item.href} class="sidebar-nav-link">{item.label}</a>
+          <a href={url(item.href)} class="sidebar-nav-link">{item.label}</a>
         ))}
       </nav>
     </aside>
@@ -70,7 +71,7 @@ const nav = siteConfig.nav;
     <button class="mobile-close" id="home-mobile-close-btn" aria-label="Close menu">✕</button>
     <nav class="mobile-nav" aria-label="Mobile navigation">
       {nav.map((item) => (
-        <a href={item.href} class="mobile-nav-link">{item.label}</a>
+        <a href={url(item.href)} class="mobile-nav-link">{item.label}</a>
       ))}
     </nav>
   </div>

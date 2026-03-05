@@ -1,5 +1,6 @@
 ---
 import siteConfig from '../../site-config.json';
+import { url } from '../lib/url';
 
 const nav = siteConfig.nav;
 ---
@@ -10,7 +11,7 @@ const nav = siteConfig.nav;
   </button>
   <nav class="header-nav" aria-label="Main navigation">
     {nav.map((item) => (
-      <a href={item.href} class="nav-link">{item.label}</a>
+      <a href={url(item.href)} class="nav-link">{item.label}</a>
     ))}
   </nav>
 </header>
@@ -20,7 +21,7 @@ const nav = siteConfig.nav;
   <button class="mobile-close" id="mobile-close-btn" aria-label="Close menu">✕</button>
   <nav class="mobile-nav" aria-label="Mobile navigation">
     {nav.map((item) => (
-      <a href={item.href} class="mobile-nav-link">{item.label}</a>
+      <a href={url(item.href)} class="mobile-nav-link">{item.label}</a>
     ))}
   </nav>
 </div>
